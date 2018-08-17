@@ -1,0 +1,45 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: broker-service
+spec:
+  selector:
+    app: broker-service
+  ports:
+  - port: 8090
+    targetPort: 8090
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker-service
+  labels:
+    app: broker-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broker-service
+  template:
+    metadata:
+      labels:
+        app: broker-service
+    spec:
+      containers:
+      - name: broker-service
+        image: localhost:5000/broker:0.0.1-SNAPSHOT
+        envFrom:
+        - configMapRef:
+            name: broker-service        
+        resources:
+          requests:
+            memory: "512M"
+            cpu: "0.5"
+          limits:
+            memory: "512M"
+            cpu: "0.5"
+        ports:
+        - containerPort: 8090
+        imagePullPolicy: Always
