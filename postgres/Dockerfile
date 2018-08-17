@@ -11,7 +11,6 @@
 
 
 FROM alpine:3.4
-MAINTAINER andrew.fry
 
 RUN apk add --update --no-cache bash
 
